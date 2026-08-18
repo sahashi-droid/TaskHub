@@ -1,0 +1,155 @@
+﻿@model ProjectDetailsViewModel
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<section class="surface-card">
+    <div class="split-title">
+        <div>
+            <div class="button-row mb-3">
+                @if (Model.CurrentUserIsOwner)
+                {
+                    <span class="badge-soft badge-soft-primary">Owner</span>
+                }
+                else
+                {
+                    <span class="badge-soft badge-soft-neutral">Member</span>
+                }
+
+                @if (Model.IsArchived)
+                {
+                    <span class="badge-soft badge-soft-warning">Archived</span>
+                }
+            </div>
+            <h2 class="mb-2">@Model.Name</h2>
+            <p class="content-muted mb-0">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "No project description has been added yet.")</p>
+        </div>
+
+        <div class="button-row">
+            <a asp-controller="Tasks" asp-action="Index" asp-route-projectId="@Model.Id" class="btn btn-outline-primary">View Tasks</a>
+            @if (!Model.IsArchived)
+            {
+                <a asp-controller="Tasks" asp-action="Create" asp-route-projectId="@Model.Id" class="btn btn-primary">New Task</a>
+            }
+            @if (Model.CurrentUserIsOwner)
+            {
+                <a asp-action="Members" asp-route-id="@Model.Id" class="btn btn-ghost">Manage Members</a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-ghost">Edit</a>
+                @if (!Model.IsArchived)
+                {
+                    <form asp-action="Archive" asp-route-id="@Model.Id" method="post">
+                        <button type="submit" class="btn btn-danger-soft">Archive</button>
+                    </form>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="property-grid mt-4">
+        <div class="property-tile">
+            <p class="meta-label mb-1">Owner</p>
+            <strong>@Model.OwnerName</strong>
+        </div>
+        <div class="property-tile">
+            <p class="meta-label mb-1">Created</p>
+            <strong>@Model.CreatedAtUtc.ToString("MMM dd, yyyy")</strong>
+        </div>
+        <div class="property-tile">
+            <p class="meta-label mb-1">Last updated</p>
+            <strong>@Model.UpdatedAtUtc.ToString("MMM dd, yyyy")</strong>
+        </div>
+        <div class="property-tile">
+            <p class="meta-label mb-1">Active members</p>
+            <strong>@Model.Members.Count</strong>
+        </div>
+    </div>
+</section>
+
+<section class="section-grid">
+    <div class="col-4">
+        <div class="surface-card">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow mb-1">Members</p>
+                    <h2>Project team</h2>
+                </div>
+                @if (Model.CurrentUserIsOwner)
+                {
+                    <a asp-action="Members" asp-route-id="@Model.Id" class="btn btn-ghost">Manage</a>
+                }
+            </div>
+
+            @if (Model.Members.Any())
+            {
+                <div class="member-grid">
+                    @foreach (var member in Model.Members)
+                    {
+                        <article class="member-card">
+                            <div class="button-row mb-2">
+                                <span class="badge-soft @(member.Role == ProjectRole.Owner ? "badge-soft-primary" : "badge-soft-neutral")">@member.Role</span>
+                            </div>
+                            <h3 class="card-title">@member.DisplayName</h3>
+                            <p class="content-muted mb-0">@member.Email</p>
+                            <p class="footer-note mt-3 mb-0">Joined @member.JoinedAtUtc.ToString("MMM dd, yyyy")</p>
+                        </article>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <p class="mb-0">No members found.</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-8">
+        <div class="surface-card">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow mb-1">Tasks</p>
+                    <h2>Current workload</h2>
+                </div>
+            </div>
+
+            @if (Model.Tasks.Any())
+            {
+                <div class="task-grid">
+                    @foreach (var task in Model.Tasks)
+                    {
+                        <article class="task-card">
+                            <div class="task-card-header">
+                                <div>
+                                    <div class="button-row mb-2">
+                                        <partial name="Partials/_TaskStatusBadge" model="task.Status" />
+                                        <partial name="Partials/_TaskPriorityBadge" model="task.Priority" />
+                                    </div>
+                                    <h3 class="card-title">@task.Title</h3>
+                                </div>
+                            </div>
+                            <ul class="meta-list mt-3">
+                                <li><span>Assignee</span><strong>@(task.AssigneeName ?? "Unassigned")</strong></li>
+                                <li><span>Due date</span><strong>@(task.DueDateUtc?.ToString("MMM dd, yyyy") ?? "None")</strong></li>
+                                <li><span>Updated</span><strong>@task.UpdatedAtUtc.ToString("MMM dd, yyyy")</strong></li>
+                            </ul>
+                            <div class="button-row mt-4">
+                                <a asp-controller="Tasks" asp-action="Details" asp-route-id="@task.Id" class="btn btn-outline-primary">Open Task</a>
+                            </div>
+                        </article>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <p class="mb-3">This project does not have any tasks yet.</p>
+                    @if (!Model.IsArchived)
+                    {
+                        <a asp-controller="Tasks" asp-action="Create" asp-route-projectId="@Model.Id" class="btn btn-primary">Create the first task</a>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</section>

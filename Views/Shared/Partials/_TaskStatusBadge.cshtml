@@ -1,0 +1,14 @@
+﻿@model TaskItemStatus
+
+@{
+    var cssClass = Model switch
+    {
+        TaskItemStatus.Todo => "badge-soft badge-soft-neutral",
+        TaskItemStatus.InProgress => "badge-soft badge-soft-primary",
+        TaskItemStatus.Done => "badge-soft badge-soft-success",
+        TaskItemStatus.Blocked => "badge-soft badge-soft-danger",
+        _ => "badge-soft badge-soft-neutral"
+    };
+}
+
+<span class="@cssClass">@Model</span>

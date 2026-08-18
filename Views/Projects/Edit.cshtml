@@ -1,0 +1,43 @@
+﻿@model ProjectFormViewModel
+@{
+    ViewData["Title"] = "Edit Project";
+}
+
+<section class="section-grid">
+    <div class="col-8">
+        <div class="surface-card">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow mb-1">Project Settings</p>
+                    <h2>Edit project details</h2>
+                </div>
+            </div>
+
+            <form asp-action="Edit" method="post">
+                <input asp-for="Id" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="validation-summary-errors mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="field-validation-error"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Description" class="field-validation-error"></span>
+                </div>
+
+                <div class="button-row mt-4">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-ghost">Back to Project</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

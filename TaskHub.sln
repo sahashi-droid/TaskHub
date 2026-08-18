@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskHub", "TaskHub.csproj", "{3E9EFE8D-9343-43C0-ACBF-5D26F76ECFED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E9EFE8D-9343-43C0-ACBF-5D26F76ECFED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E9EFE8D-9343-43C0-ACBF-5D26F76ECFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E9EFE8D-9343-43C0-ACBF-5D26F76ECFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E9EFE8D-9343-43C0-ACBF-5D26F76ECFED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {196D86AC-633C-426E-A05E-ED64D858ADC2}
+	EndGlobalSection
+EndGlobal

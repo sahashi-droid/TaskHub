@@ -1,0 +1,41 @@
+**/.git
+**/.vs
+**/.vscode
+**/bin
+**/obj
+**/TestResults
+**/*.user
+**/*.suo
+**/*.cache
+**/*.log
+.codex
+Dockerfile
+docker-compose*.yml
+README.md
+# Exam submission artifacts (do not include in image builds)
+evidence/
+reports/
+screenshots/
+docs/
+
+# Markdown / notes
+*.md
+!README.md
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.webp
+*.svg
+
+# Optional: common local clutter
+.git
+.gitignore
+.vscode
+.vs
+.idea
+bin/
+obj/

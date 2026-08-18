@@ -1,0 +1,129 @@
+﻿@model TaskDetailsViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<section class="surface-card">
+    <div class="split-title">
+        <div>
+            <div class="button-row mb-3">
+                <partial name="Partials/_TaskStatusBadge" model="Model.Status" />
+                <partial name="Partials/_TaskPriorityBadge" model="Model.Priority" />
+                @if (Model.ProjectIsArchived)
+                {
+                    <span class="badge-soft badge-soft-warning">Project Archived</span>
+                }
+            </div>
+            <h2 class="mb-2">@Model.Title</h2>
+            <p class="content-muted mb-0">Project: <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId" class="btn-link-inline">@Model.ProjectName</a></p>
+        </div>
+
+        <div class="button-row">
+            @if (Model.CurrentUserCanEdit)
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit Task</a>
+            }
+            @if (Model.CurrentUserCanDelete)
+            {
+                <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                    <button type="submit" class="btn btn-danger-soft">Delete</button>
+                </form>
+            }
+        </div>
+    </div>
+
+    <div class="section-grid mt-2">
+        <div class="col-8">
+            <div class="property-tile h-100">
+                <p class="meta-label mb-2">Description</p>
+                <div>@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "No description was provided for this task.")</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="property-grid">
+                <div class="property-tile">
+                    <p class="meta-label mb-1">Assignee</p>
+                    <strong>@(Model.AssigneeName ?? "Unassigned")</strong>
+                </div>
+                <div class="property-tile">
+                    <p class="meta-label mb-1">Created by</p>
+                    <strong>@Model.CreatedByName</strong>
+                </div>
+                <div class="property-tile">
+                    <p class="meta-label mb-1">Due date</p>
+                    <strong>@(Model.DueDateUtc?.ToString("MMM dd, yyyy") ?? "None")</strong>
+                </div>
+                <div class="property-tile">
+                    <p class="meta-label mb-1">Updated</p>
+                    <strong>@Model.UpdatedAtUtc.ToString("MMM dd, yyyy")</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-grid">
+    <div class="col-4">
+        <div class="surface-card">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow mb-1">Add Comment</p>
+                    <h2>Discussion</h2>
+                </div>
+            </div>
+
+            <form asp-action="AddComment" method="post">
+                <input type="hidden" name="TaskId" value="@Model.NewComment.TaskId" />
+                <div class="mb-3">
+                    <label class="form-label" for="commentContent">Comment</label>
+                    <textarea id="commentContent" name="Content" class="form-control" rows="6" placeholder="Share progress, blockers, or decisions...">@Model.NewComment.Content</textarea>
+                    @Html.ValidationMessage("Content", new { @class = "field-validation-error" })
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Post Comment</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-8">
+        <div class="surface-card">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow mb-1">Timeline</p>
+                    <h2>Comment history</h2>
+                </div>
+            </div>
+
+            @if (Model.Comments.Any())
+            {
+                <div class="comment-list">
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <article class="comment-card mb-3">
+                            <div class="comment-head">
+                                <div>
+                                    <strong>@comment.AuthorName</strong>
+                                    <div class="footer-note">@comment.AuthorEmail</div>
+                                </div>
+                                <div class="text-end">
+                                    <div>@comment.CreatedAtUtc.ToString("MMM dd, yyyy HH:mm") UTC</div>
+                                    @if (comment.UpdatedAtUtc.HasValue)
+                                    {
+                                        <div class="footer-note">Edited @comment.UpdatedAtUtc.Value.ToString("MMM dd, yyyy HH:mm") UTC</div>
+                                    }
+                                </div>
+                            </div>
+                            <p class="mb-0 mt-3">@comment.Content</p>
+                        </article>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <p class="mb-0">No comments yet. Start the discussion on this task.</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>

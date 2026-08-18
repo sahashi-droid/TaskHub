@@ -1,0 +1,131 @@
+﻿@{
+    var pageTitle = ViewData["Title"] as string ?? "TaskHub";
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    var isAuthenticated = User.Identity?.IsAuthenticated ?? false;
+    var identityLabel = string.IsNullOrWhiteSpace(User.Identity?.Name) ? "TaskHub User" : User.Identity!.Name!;
+    var identityInitial = identityLabel.Substring(0, 1).ToUpperInvariant();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@pageTitle · TaskHub</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="taskhub-body @(isAuthenticated ? "taskhub-authenticated" : "taskhub-public")">
+    @if (isAuthenticated)
+    {
+        <div class="app-shell">
+            <aside class="app-sidebar" id="appSidebar">
+                <a class="brand-lockup" asp-controller="Projects" asp-action="Index">
+                    <span class="brand-mark">TH</span>
+                    <span>
+                        <strong>TaskHub</strong>
+                        <small>Projects, tasks, comments</small>
+                    </span>
+                </a>
+
+                <nav class="sidebar-nav">
+                    <a class="sidebar-link @(currentController == "Projects" && currentAction == "Index" ? "active" : null)" asp-controller="Projects" asp-action="Index">My Projects</a>
+                    <a class="sidebar-link @(currentController == "Projects" && currentAction == "Create" ? "active" : null)" asp-controller="Projects" asp-action="Create">Create Project</a>
+                    <a class="sidebar-link @(currentController == "Account" && currentAction == "Profile" ? "active" : null)" asp-controller="Account" asp-action="Profile">Profile</a>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="user-pill">
+                        <span class="user-pill-avatar">@identityInitial</span>
+                        <div>
+                            <strong>@identityLabel</strong>
+                            <small>Signed in</small>
+                        </div>
+                    </div>
+                    <form asp-controller="Account" asp-action="Logout" method="post">
+                        <button type="submit" class="btn btn-ghost w-100">Sign out</button>
+                    </form>
+                </div>
+            </aside>
+
+            <div class="app-frame">
+                <header class="app-topbar">
+                    <div>
+                        <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-label="Toggle navigation">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                        <p class="eyebrow mb-1">TaskHub Workspace</p>
+                        <h1 class="page-title">@pageTitle</h1>
+                    </div>
+                    <div class="topbar-actions">
+                        <a class="btn btn-outline-primary" asp-controller="Projects" asp-action="Create">New Project</a>
+                    </div>
+                </header>
+
+                <main class="app-main">
+                    @if (TempData["SuccessMessage"] is string successMessage)
+                    {
+                        <div class="app-alert app-alert-success" data-dismissable>
+                            <span>@successMessage</span>
+                            <button type="button" class="alert-close" data-dismiss-alert aria-label="Dismiss">&times;</button>
+                        </div>
+                    }
+
+                    @if (TempData["ErrorMessage"] is string errorMessage)
+                    {
+                        <div class="app-alert app-alert-danger" data-dismissable>
+                            <span>@errorMessage</span>
+                            <button type="button" class="alert-close" data-dismiss-alert aria-label="Dismiss">&times;</button>
+                        </div>
+                    }
+
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    }
+    else
+    {
+        <header class="public-navbar">
+            <a class="brand-lockup public-brand" asp-controller="Home" asp-action="Index">
+                <span class="brand-mark">TH</span>
+                <span>
+                    <strong>TaskHub</strong>
+                    <small>Collaborative task management</small>
+                </span>
+            </a>
+
+            <nav class="public-nav">
+                <a asp-controller="Account" asp-action="Login" class="btn btn-ghost">Sign in</a>
+                <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Create account</a>
+            </nav>
+        </header>
+
+        <main class="public-main">
+            @if (TempData["SuccessMessage"] is string successMessage)
+            {
+                <div class="app-alert app-alert-success app-alert-public" data-dismissable>
+                    <span>@successMessage</span>
+                    <button type="button" class="alert-close" data-dismiss-alert aria-label="Dismiss">&times;</button>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] is string errorMessage)
+            {
+                <div class="app-alert app-alert-danger app-alert-public" data-dismissable>
+                    <span>@errorMessage</span>
+                    <button type="button" class="alert-close" data-dismiss-alert aria-label="Dismiss">&times;</button>
+                </div>
+            }
+
+            @RenderBody()
+        </main>
+    }
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

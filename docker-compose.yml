@@ -1,0 +1,70 @@
+name: taskhub
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+    # TODO:
+    # Add a container name for the database service.
+
+    # TODO:
+    # Add the environment variables needed by SQL Server.
+    # Include:
+    # - ACCEPT_EULA
+    # - MSSQL_PID
+    # - MSSQL_SA_PASSWORD
+
+    # TODO:
+    # Expose port 1433 from the container to the host
+    # by using the MSSQL_HOST_PORT variable on the host side.
+
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"${MSSQL_SA_PASSWORD}\" -C -Q \"SELECT 1\" || /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"${MSSQL_SA_PASSWORD}\" -Q \"SELECT 1\""]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: migrations
+    container_name: taskhub-migrations
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=db,1433;Database=${MSSQL_DATABASE};User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  app:
+    # TODO:
+    # Build the app service from the current folder using:
+    # - Dockerfile
+    # - the final stage
+
+    # TODO:
+    # Add an image name for the app container.
+
+    # TODO:
+    # Add a container name for the app service.
+
+    # TODO:
+    # Add the environment variables needed by the app.
+    # Include:
+    # - ASPNETCORE_ENVIRONMENT
+    # - ASPNETCORE_URLS
+    # - ConnectionStrings__DefaultConnection
+
+    # TODO:
+    # Expose port 8080 from the container to the host
+    # by using the TASKHUB_HTTP_PORT variable on the host side.
+
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    restart: unless-stopped

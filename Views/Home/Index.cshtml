@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Modern Team Task Management";
+}
+
+<section class="hero-panel">
+    <div class="hero-copy">
+        <p class="eyebrow">MVC + API on one shared core</p>
+        <h1 class="display-title">Coordinate projects, tasks, assignments, and conversation in one clean workspace.</h1>
+        <p class="muted-copy mt-3">
+            TaskHub combines ASP.NET Core MVC, Identity, EF Core, and JWT-protected APIs into a single production-minded learning project.
+            It is structured to feel like a lightweight collaboration tool, not a classroom scaffold.
+        </p>
+
+        <div class="button-row mt-4">
+            <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Create your account</a>
+            <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Login">Sign in</a>
+        </div>
+
+        <ul class="stat-list mt-4">
+            <li><span>Web experience</span><strong>Server-rendered MVC views</strong></li>
+            <li><span>Programmatic access</span><strong>JWT-secured JSON API</strong></li>
+            <li><span>Security</span><strong>Identity + project-level authorization</strong></li>
+        </ul>
+    </div>
+
+    <div class="hero-stats">
+        <div class="metric-card">
+            <span class="metric-value">Projects</span>
+            <p class="content-muted mb-0">Owners manage membership, archive workspaces, and keep collaboration scoped correctly.</p>
+        </div>
+        <div class="metric-card">
+            <span class="metric-value">Tasks</span>
+            <p class="content-muted mb-0">Track title, description, due date, status, priority, assignee, creator, and discussion.</p>
+        </div>
+        <div class="metric-card">
+            <span class="metric-value">Comments</span>
+            <p class="content-muted mb-0">Give every task a running timeline of decisions, progress, and feedback.</p>
+        </div>
+        <div class="metric-card">
+            <span class="metric-value">API</span>
+            <p class="content-muted mb-0">Register, log in, issue JWTs, and manage projects and tasks over REST-style endpoints.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section-grid">
+    <div class="col-4">
+        <article class="feature-card">
+            <p class="eyebrow">Shared business logic</p>
+            <h2 class="card-title">MVC and API stay aligned</h2>
+            <p class="content-muted mb-0">Project access, owner-only membership management, task assignment checks, and comment permissions all run through the same service layer.</p>
+        </article>
+    </div>
+    <div class="col-4">
+        <article class="feature-card">
+            <p class="eyebrow">Deployment-ready shape</p>
+            <h2 class="card-title">Environment-friendly configuration</h2>
+            <p class="content-muted mb-0">Connection strings and JWT settings come from configuration so the app can move cleanly into containers or Azure later.</p>
+        </article>
+    </div>
+    <div class="col-4">
+        <article class="feature-card">
+            <p class="eyebrow">Education without toy code</p>
+            <h2 class="card-title">Readable but realistic</h2>
+            <p class="content-muted mb-0">Thin controllers, view models, DTOs, EF configurations, Identity integration, migrations, and clear authorization boundaries.</p>
+        </article>
+    </div>
+</section>
+
+<section class="section-grid">
+    <div class="col-8">
+        <div class="surface-card">
+            <div class="section-header">
+                <div>
+                    <p class="eyebrow mb-1">Typical workflow</p>
+                    <h2>How teams move through TaskHub</h2>
+                </div>
+            </div>
+            <div class="feature-grid">
+                <article class="timeline-card">
+                    <h3 class="card-title">1. Create a project</h3>
+                    <p class="content-muted mb-0">The creator becomes owner automatically and is added to the membership table with owner role.</p>
+                </article>
+                <article class="timeline-card">
+                    <h3 class="card-title">2. Invite members</h3>
+                    <p class="content-muted mb-0">Owners add collaborators by email, keeping project visibility scoped to members only.</p>
+                </article>
+                <article class="timeline-card">
+                    <h3 class="card-title">3. Create and assign tasks</h3>
+                    <p class="content-muted mb-0">Tasks can only be assigned to active users who already belong to the project.</p>
+                </article>
+                <article class="timeline-card">
+                    <h3 class="card-title">4. Track progress</h3>
+                    <p class="content-muted mb-0">Use Todo, InProgress, Done, and Blocked with visible priority markers to keep work moving.</p>
+                </article>
+                <article class="timeline-card">
+                    <h3 class="card-title">5. Comment on work</h3>
+                    <p class="content-muted mb-0">Task-level discussion creates a chronological audit trail for decisions and updates.</p>
+                </article>
+                <article class="timeline-card">
+                    <h3 class="card-title">6. Automate with API</h3>
+                    <p class="content-muted mb-0">Issue a JWT from the auth endpoints and use the same rules over JSON as the MVC site enforces.</p>
+                </article>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="surface-card">
+            <p class="eyebrow mb-1">API sample</p>
+            <h2>JWT login flow</h2>
+            <pre class="mb-0"><code>POST /api/auth/login
+{
+  "email": "user@example.com",
+  "password": "Password123"
+}</code></pre>
+        </div>
+    </div>
+</section>

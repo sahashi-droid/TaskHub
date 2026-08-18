@@ -1,0 +1,60 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<section class="auth-shell">
+    <div class="auth-card">
+        <aside class="auth-aside">
+            <p class="eyebrow text-white-50">Welcome back</p>
+            <h1 class="display-title fs-1 text-white">Get back to your projects quickly.</h1>
+            <p class="mt-3 text-white-50">Use the MVC web app for day-to-day work, or sign in through the API to automate project and task operations with JWT bearer tokens.</p>
+            <ul class="stat-list mt-4 text-white">
+                <li><span>Cookie auth</span><strong>Web UI sessions</strong></li>
+                <li><span>JWT auth</span><strong>Programmatic access</strong></li>
+                <li><span>Shared rules</span><strong>One business layer</strong></li>
+            </ul>
+        </aside>
+
+        <div class="auth-content">
+            <div class="mb-4">
+                <p class="eyebrow mb-1">Account Access</p>
+                <h2 class="mb-2">Sign in to TaskHub</h2>
+                <p class="content-muted mb-0">Access your projects, tasks, memberships, and profile.</p>
+            </div>
+
+            <form asp-action="Login" method="post">
+                <input asp-for="ReturnUrl" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="validation-summary-errors mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+                    <span asp-validation-for="Email" class="field-validation-error"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="form-control" placeholder="Enter your password" />
+                    <span asp-validation-for="Password" class="field-validation-error"></span>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label"></label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Sign in</button>
+            </form>
+
+            <p class="footer-note mt-4 mb-0">
+                Need an account?
+                <a asp-action="Register" class="btn-link-inline">Create one here</a>.
+            </p>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

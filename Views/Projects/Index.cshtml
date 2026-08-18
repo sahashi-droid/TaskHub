@@ -1,0 +1,57 @@
+﻿@model ProjectIndexViewModel
+@{
+    ViewData["Title"] = "My Projects";
+}
+
+<div class="panel-header">
+    <div>
+        <p class="eyebrow mb-1">Workspace Overview</p>
+        <h2 class="mb-2">Projects you own or belong to</h2>
+        <p class="content-muted mb-0">Open a project to manage members, tasks, assignments, and progress.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">Create Project</a>
+</div>
+
+@if (Model.Projects.Any())
+{
+    <section class="project-grid">
+        @foreach (var project in Model.Projects)
+        {
+            <article class="project-card">
+                <div class="project-card-header">
+                    <div>
+                        <div class="button-row mb-2">
+                            <span class="badge-soft @(project.CurrentUserRole == ProjectRole.Owner ? "badge-soft-primary" : "badge-soft-neutral")">@project.CurrentUserRole</span>
+                            @if (project.IsArchived)
+                            {
+                                <span class="badge-soft badge-soft-warning">Archived</span>
+                            }
+                        </div>
+                        <h3 class="card-title">@project.Name</h3>
+                        <p class="content-muted mb-0 mt-2">@(!string.IsNullOrWhiteSpace(project.Description) ? project.Description : "No description yet.")</p>
+                    </div>
+                </div>
+
+                <ul class="meta-list mt-4">
+                    <li><span>Owner</span><strong>@project.OwnerName</strong></li>
+                    <li><span>Members</span><strong>@project.MemberCount</strong></li>
+                    <li><span>Tasks</span><strong>@project.TaskCount</strong></li>
+                    <li><span>Updated</span><strong>@project.UpdatedAtUtc.ToString("MMM dd, yyyy")</strong></li>
+                </ul>
+
+                <div class="button-row mt-4">
+                    <a asp-action="Details" asp-route-id="@project.Id" class="btn btn-outline-primary">Open Project</a>
+                    <a asp-controller="Tasks" asp-action="Index" asp-route-projectId="@project.Id" class="btn btn-ghost">View Tasks</a>
+                </div>
+            </article>
+        }
+    </section>
+}
+else
+{
+    <div class="empty-state">
+        <h3>No projects yet</h3>
+        <p class="mb-3">Create your first workspace to start inviting members and tracking tasks.</p>
+        <a asp-action="Create" class="btn btn-primary">Create Project</a>
+    </div>
+}

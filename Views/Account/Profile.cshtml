@@ -1,0 +1,47 @@
+﻿@model ProfileViewModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<section class="section-grid">
+    <div class="col-8">
+        <div class="surface-card">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow mb-1">User Profile</p>
+                    <h2>@Model.DisplayName</h2>
+                </div>
+            </div>
+
+            <div class="property-grid">
+                <div class="property-tile">
+                    <p class="meta-label mb-1">Email</p>
+                    <strong>@Model.Email</strong>
+                </div>
+                <div class="property-tile">
+                    <p class="meta-label mb-1">Status</p>
+                    <strong>@(Model.IsActive ? "Active" : "Inactive")</strong>
+                </div>
+                <div class="property-tile">
+                    <p class="meta-label mb-1">Member since</p>
+                    <strong>@Model.CreatedAtUtc.ToString("MMM dd, yyyy")</strong>
+                </div>
+                <div class="property-tile">
+                    <p class="meta-label mb-1">Visible projects</p>
+                    <strong>@Model.ProjectCount</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="surface-card">
+            <p class="eyebrow mb-1">Identity</p>
+            <h2>Account record</h2>
+            <ul class="meta-list mt-3">
+                <li><span>First name</span><strong>@Model.FirstName</strong></li>
+                <li><span>Last name</span><strong>@Model.LastName</strong></li>
+                <li><span>Display name</span><strong>@Model.DisplayName</strong></li>
+            </ul>
+        </div>
+    </div>
+</section>

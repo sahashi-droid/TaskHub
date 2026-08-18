@@ -1,0 +1,14 @@
+﻿@model TaskPriority
+
+@{
+    var cssClass = Model switch
+    {
+        TaskPriority.Low => "badge-soft badge-soft-neutral",
+        TaskPriority.Medium => "badge-soft badge-soft-primary",
+        TaskPriority.High => "badge-soft badge-soft-warning",
+        TaskPriority.Critical => "badge-soft badge-soft-danger",
+        _ => "badge-soft badge-soft-neutral"
+    };
+}
+
+<span class="@cssClass">@Model</span>

@@ -1,0 +1,83 @@
+﻿@model ManageProjectMembersViewModel
+@{
+    ViewData["Title"] = "Manage Members";
+}
+
+<section class="section-grid">
+    <div class="col-4">
+        <div class="surface-card">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow mb-1">Project Access</p>
+                    <h2>Add members</h2>
+                </div>
+            </div>
+
+            <p class="content-muted">Only the project owner can add or remove collaborators.</p>
+
+            <form asp-action="AddMember" method="post">
+                <input asp-for="ProjectId" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="validation-summary-errors mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="AddMemberEmail" class="form-label"></label>
+                    <input asp-for="AddMemberEmail" class="form-control" placeholder="teammate@example.com" />
+                    <span asp-validation-for="AddMemberEmail" class="field-validation-error"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Add Member</button>
+            </form>
+
+            <div class="button-row mt-4">
+                <a asp-action="Details" asp-route-id="@Model.ProjectId" class="btn btn-ghost">Back to Project</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-8">
+        <div class="surface-card">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow mb-1">Current Team</p>
+                    <h2>@Model.ProjectName</h2>
+                </div>
+            </div>
+
+            @if (Model.Members.Any())
+            {
+                <div class="member-grid">
+                    @foreach (var member in Model.Members)
+                    {
+                        <article class="member-card">
+                            <div class="button-row mb-2">
+                                <span class="badge-soft @(member.Role == ProjectRole.Owner ? "badge-soft-primary" : "badge-soft-neutral")">@member.Role</span>
+                            </div>
+                            <h3 class="card-title">@member.DisplayName</h3>
+                            <p class="content-muted mb-1">@member.Email</p>
+                            <p class="footer-note mb-0">Joined @member.JoinedAtUtc.ToString("MMM dd, yyyy")</p>
+
+                            @if (member.Role != ProjectRole.Owner)
+                            {
+                                <form asp-action="RemoveMember" method="post" class="mt-4">
+                                    <input type="hidden" name="projectId" value="@Model.ProjectId" />
+                                    <input type="hidden" name="memberUserId" value="@member.UserId" />
+                                    <button type="submit" class="btn btn-danger-soft">Remove Member</button>
+                                </form>
+                            }
+                        </article>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <p class="mb-0">No members are attached to this project.</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: myapp-migrate
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: migrate
+          image: <yourregistry/myapp:latest>
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: "Server=sqlserver,1433;Database=AppDb;User Id=sa;Password=YourStrong!Passw0rd;Encrypt=False;TrustServerCertificate=True"
+          command: ["dotnet", "TaskHub.dll", "--migrate-only"]

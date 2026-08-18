@@ -1,0 +1,52 @@
+﻿@model ProjectFormViewModel
+@{
+    ViewData["Title"] = "Create Project";
+}
+
+<section class="section-grid">
+    <div class="col-8">
+        <div class="surface-card">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow mb-1">New Workspace</p>
+                    <h2>Create a project</h2>
+                </div>
+            </div>
+
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="validation-summary-errors mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Example: Product Launch Planning" />
+                    <span asp-validation-for="Name" class="field-validation-error"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="5" placeholder="Describe the purpose, collaborators, and scope of the project."></textarea>
+                    <span asp-validation-for="Description" class="field-validation-error"></span>
+                </div>
+
+                <div class="button-row mt-4">
+                    <button type="submit" class="btn btn-primary">Create Project</button>
+                    <a asp-action="Index" class="btn btn-ghost">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="surface-card">
+            <p class="eyebrow mb-1">What happens next</p>
+            <ul class="meta-list">
+                <li><span>Ownership</span><strong>You become the owner</strong></li>
+                <li><span>Membership</span><strong>You are added automatically</strong></li>
+                <li><span>Next step</span><strong>Invite members, then create tasks</strong></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,79 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<section class="auth-shell">
+    <div class="auth-card">
+        <aside class="auth-aside">
+            <p class="eyebrow text-white-50">Start collaborating</p>
+            <h1 class="display-title fs-1 text-white">Create a workspace-ready account.</h1>
+            <p class="mt-3 text-white-50">Register once, then create projects, invite members, manage assignments, and access the same data through the API.</p>
+            <div class="feature-grid mt-4">
+                <article class="timeline-card bg-transparent border border-white border-opacity-10 text-white">
+                    <h3 class="card-title">Project ownership</h3>
+                    <p class="mb-0 text-white-50">Owners control memberships and archive workflows when needed.</p>
+                </article>
+                <article class="timeline-card bg-transparent border border-white border-opacity-10 text-white">
+                    <h3 class="card-title">Clear task flow</h3>
+                    <p class="mb-0 text-white-50">Track due dates, status, priority, assignee, creator, and comment history.</p>
+                </article>
+            </div>
+        </aside>
+
+        <div class="auth-content">
+            <div class="mb-4">
+                <p class="eyebrow mb-1">New Account</p>
+                <h2 class="mb-2">Register for TaskHub</h2>
+                <p class="content-muted mb-0">Create a secure account with ASP.NET Core Identity-backed authentication.</p>
+            </div>
+
+            <form asp-action="Register" method="post">
+                <div asp-validation-summary="ModelOnly" class="validation-summary-errors mb-3"></div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="FirstName" class="form-label"></label>
+                        <input asp-for="FirstName" class="form-control" placeholder="Avery" />
+                        <span asp-validation-for="FirstName" class="field-validation-error"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="LastName" class="form-label"></label>
+                        <input asp-for="LastName" class="form-control" placeholder="Morgan" />
+                        <span asp-validation-for="LastName" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+                    <span asp-validation-for="Email" class="field-validation-error"></span>
+                </div>
+
+                <div class="row g-3 mt-1">
+                    <div class="col-md-6">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" placeholder="Minimum 8 characters" />
+                        <span asp-validation-for="Password" class="field-validation-error"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm your password" />
+                        <span asp-validation-for="ConfirmPassword" class="field-validation-error"></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-4">Create account</button>
+            </form>
+
+            <p class="footer-note mt-4 mb-0">
+                Already registered?
+                <a asp-action="Login" class="btn-link-inline">Sign in instead</a>.
+            </p>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

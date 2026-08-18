@@ -1,0 +1,28 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Something Went Wrong";
+}
+
+<section class="section-grid">
+    <div class="col-8">
+        <div class="surface-card">
+            <p class="eyebrow mb-1">Request issue</p>
+            <h1 class="mb-3">We couldn’t complete that action.</h1>
+            <p class="content-muted mb-4">@Model.Message</p>
+
+            <div class="button-row">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to home</a>
+                <a asp-controller="Projects" asp-action="Index" class="btn btn-outline-primary">Go to projects</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="surface-card">
+            <p class="eyebrow mb-1">Diagnostics</p>
+            <ul class="meta-list">
+                <li><span>Status code</span><strong>@(Model.StatusCode?.ToString() ?? "N/A")</strong></li>
+                <li><span>Request id</span><strong>@(Model.ShowRequestId ? Model.RequestId : "Unavailable")</strong></li>
+            </ul>
+        </div>
+    </div>
+</section>

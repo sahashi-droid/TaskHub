@@ -1,0 +1,73 @@
+﻿@model TaskIndexViewModel
+@{
+    ViewData["Title"] = "Project Tasks";
+}
+
+<section class="surface-card">
+    <div class="split-title">
+        <div>
+            <p class="eyebrow mb-1">Project Work Queue</p>
+            <h2>@Model.ProjectName</h2>
+            <p class="content-muted mb-0">Filter and open tasks across the project.</p>
+        </div>
+        <div class="button-row">
+            <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId" class="btn btn-ghost">Back to Project</a>
+            @if (!Model.IsArchived)
+            {
+                <a asp-action="Create" asp-route-projectId="@Model.ProjectId" class="btn btn-primary">New Task</a>
+            }
+        </div>
+    </div>
+
+    <form asp-action="Index" method="get" class="row g-3 mt-2 align-items-end">
+        <input type="hidden" name="projectId" value="@Model.ProjectId" />
+        <div class="col-md-4">
+            <label class="form-label" for="status">Status filter</label>
+            <select id="status" name="status" asp-items="Model.StatusOptions" class="form-select"></select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-outline-primary">Apply Filter</button>
+        </div>
+    </form>
+</section>
+
+@if (Model.Tasks.Any())
+{
+    <section class="task-grid mt-4">
+        @foreach (var task in Model.Tasks)
+        {
+            <article class="task-card">
+                <div class="task-card-header">
+                    <div>
+                        <div class="button-row mb-2">
+                            <partial name="Partials/_TaskStatusBadge" model="task.Status" />
+                            <partial name="Partials/_TaskPriorityBadge" model="task.Priority" />
+                        </div>
+                        <h3 class="card-title">@task.Title</h3>
+                    </div>
+                </div>
+
+                <ul class="meta-list mt-3">
+                    <li><span>Assignee</span><strong>@(task.AssigneeName ?? "Unassigned")</strong></li>
+                    <li><span>Created by</span><strong>@task.CreatedByName</strong></li>
+                    <li><span>Due date</span><strong>@(task.DueDateUtc?.ToString("MMM dd, yyyy") ?? "None")</strong></li>
+                    <li><span>Updated</span><strong>@task.UpdatedAtUtc.ToString("MMM dd, yyyy")</strong></li>
+                </ul>
+
+                <div class="button-row mt-4">
+                    <a asp-action="Details" asp-route-id="@task.Id" class="btn btn-outline-primary">Open Task</a>
+                </div>
+            </article>
+        }
+    </section>
+}
+else
+{
+    <div class="empty-state mt-4">
+        <p class="mb-3">No tasks match the current filter.</p>
+        @if (!Model.IsArchived)
+        {
+            <a asp-action="Create" asp-route-projectId="@Model.ProjectId" class="btn btn-primary">Create Task</a>
+        }
+    </div>
+}
