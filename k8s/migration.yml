@@ -9,7 +9,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: migrate
-          image: <yourregistry/myapp:latest>
+          image: taskhub:v2
           env:
             - name: ConnectionStrings__DefaultConnection
               value: "Server=sqlserver,1433;Database=AppDb;User Id=sa;Password=YourStrong!Passw0rd;Encrypt=False;TrustServerCertificate=True"

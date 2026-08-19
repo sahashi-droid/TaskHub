@@ -35,3 +35,22 @@ spec:
               value: "Y"
             - name: MSSQL_SA_PASSWORD
               value: "YourStrong!Passw0rd"
+          volumeMounts:
+            - name: sql-data
+              mountPath: /var/opt/mssql
+      volumes:
+        - name: sql-data
+          persistentVolumeClaim:
+            claimName: sqlserver-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sqlserver-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi

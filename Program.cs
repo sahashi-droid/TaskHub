@@ -192,14 +192,13 @@ else
 // ============================================================
 // Uncomment this block when you are ready to perform the initial database migration step in K8S 
 // ============================================================
-// if (args.Contains("--migrate-only"))
-// {
-//     using var scope = app.Services.CreateScope();
-//     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-//     db.Database.Migrate();
-//     return;
-// }
-
+if (args.Contains("--migrate-only"))
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+    return;
+}
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
